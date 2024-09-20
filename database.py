@@ -12,7 +12,13 @@ data on NEOs and close approaches extracted by `extract.load_neos` and
 You'll edit this file in Tasks 2 and 3.
 """
 
+from models import NearEarthObject, CloseApproach
 
+# INFO
+""" For those who reading/grading this, I come from C and this syntax of tabs is really bothering me so I'mma just add the tailing end for everything =)))) """
+""" You can quickly skim through what I changed by the keyword 'TASK - DONE' ;) """
+
+# TASK 
 class NEODatabase:
     """A database of near-Earth objects and their close approaches.
 
@@ -21,7 +27,9 @@ class NEODatabase:
     help fetch NEOs by primary designation or by name and to help speed up
     querying for close approaches that match criteria.
     """
-    def __init__(self, neos, approaches):
+
+    # TASK - DONE
+    def __init__(self, neos: list[NearEarthObject], approaches: list[CloseApproach]):
         """Create a new `NEODatabase`.
 
         As a precondition, this constructor assumes that the collections of NEOs
@@ -36,17 +44,40 @@ class NEODatabase:
         a collection of that NEO's close approaches, and the `.neo` attribute of
         each close approach references the appropriate NEO.
 
-        :param neos: A collection of `NearEarthObject`s.
-        :param approaches: A collection of `CloseApproach`es.
+        :param neos: A collection (a list) of `NearEarthObject`s.
+        :param approaches: A collection (a list) of `CloseApproach`es.
         """
+
         self._neos = neos
         self._approaches = approaches
 
-        # TODO: What additional auxiliary data structures will be useful?
+        # We need to create 2 dictionary for quick query: {designator:index} and {name:index}
+        # with Index as the index of the neo instance in the neos list
 
-        # TODO: Link together the NEOs and their close approaches.
+        self._dict_des_inx = {}
+        self._dict_name_inx = {}
 
-    def get_neo_by_designation(self, designation):
+        # Populate all dictionary
+        inx = 0
+        for neo in self._neos:
+            self._dict_des_inx[neo.designation] = inx
+            if neo.name != None:
+                self._dict_name_inx[neo.name] = inx
+            # endif
+            inx += 1
+        #endfor
+
+        for ca in self._approaches:
+            temp_neo = self.get_neo_by_designation(ca._designation)
+            if temp_neo != None:
+                ca.neo = temp_neo
+                temp_neo.approaches.append(ca)
+            #endif
+        #endfor
+    #enddef
+
+    # TASK - DONE
+    def get_neo_by_designation(self, designation: str) -> NearEarthObject:
         """Find and return an NEO by its primary designation.
 
         If no match is found, return `None` instead.
@@ -59,10 +90,16 @@ class NEODatabase:
         :param designation: The primary designation of the NEO to search for.
         :return: The `NearEarthObject` with the desired primary designation, or `None`.
         """
-        # TODO: Fetch an NEO by its primary designation.
+        # Simply query dict to get instance
+        index_value = self._dict_des_inx.get(designation, -1)
+        if index_value >= 0:
+            return self._neos[index_value]
+        #endif
         return None
+    #enddef
 
-    def get_neo_by_name(self, name):
+    # TASK - DONE
+    def get_neo_by_name(self, name: str) -> NearEarthObject:
         """Find and return an NEO by its name.
 
         If no match is found, return `None` instead.
@@ -76,10 +113,16 @@ class NEODatabase:
         :param name: The name, as a string, of the NEO to search for.
         :return: The `NearEarthObject` with the desired name, or `None`.
         """
-        # TODO: Fetch an NEO by its name.
+        # Simply query dict to get instance
+        index_value = self._dict_name_inx.get(name, -1)
+        if index_value >= 0:
+            return self._neos[index_value]
+        #endif
         return None
+    #enddef
 
-    def query(self, filters=()):
+    # TASK 
+    def query(self, filters=()) -> CloseApproach:
         """Query close approaches to generate those that match a collection of filters.
 
         This generates a stream of `CloseApproach` objects that match all of the
@@ -96,3 +139,7 @@ class NEODatabase:
         # TODO: Generate `CloseApproach` objects that match all of the filters.
         for approach in self._approaches:
             yield approach
+        #endfor
+    #enddef
+#endclass
+

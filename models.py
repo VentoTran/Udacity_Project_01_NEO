@@ -21,7 +21,9 @@ from helpers import cd_to_datetime, datetime_to_str
 
 import math
 
+# INFO
 """ For those who reading/grading this, I come from C and this syntax of tabs is really bothering me so I'mma just add the tailing end for everything =)))) """
+""" You can quickly skim through what I changed by the keyword 'TASK - DONE' ;) """
 
 class NearEarthObject:
     """A near-Earth object (NEO).
@@ -36,13 +38,14 @@ class NearEarthObject:
     `NEODatabase` constructor.
     """
 
+    # TASK - DONE
     def __init__(self, designation: str, name: str = None, diameter: float = float("nan"), hazardous: bool = False, approaches: list = None):
         """Create a new `NearEarthObject`.
 
         :param designation: The primary designation (str)
         :param name: The IAU name (str)
-        :param diameter: The diameter (float - kilometers)
-        :param hazardous: is potentially hazardous?? (bool)
+        :param diameter: The diameter (kilometers) (float)
+        :param hazardous: is potentially hazardous (bool)
         :param approaches: A collection of close approaches to Earth (list)
         """
         self.designation = designation
@@ -58,6 +61,7 @@ class NearEarthObject:
         #endif
     #enddef
 
+    # TASK - DONE
     @property
     def fullname(self):
         """Return a representation of the full name of this NEO."""
@@ -68,6 +72,7 @@ class NearEarthObject:
         #endif
     #enddef
 
+    # TASK - DONE
     def __str__(self):
         """Return `str(self)`, a human readable text."""
 
@@ -107,25 +112,26 @@ class CloseApproach:
     private attribute, but the referenced NEO is eventually replaced in the
     `NEODatabase` constructor.
     """
-    # TODO: How can you, and should you, change the arguments to this constructor?
-    # If you make changes, be sure to update the comments in this file.
-    def __init__(self, **info):
+
+    # TASK - DONE
+    def __init__(self, designation: str, time: str = None, distance: float = 0.0, velocity: float = 0.0):
         """Create a new `CloseApproach`.
 
-        :param info: A dictionary of excess keyword arguments supplied to the constructor.
+        :param designation: The primary designation (str)
+        :param time: The date and time (UTC) (str)
+        :param distance: The nominal approach distance (au) (float)
+        :param velocity:  The velocity (km/s) (float)
         """
-        # TODO: Assign information from the arguments passed to the constructor
-        # onto attributes named `_designation`, `time`, `distance`, and `velocity`.
-        # You should coerce these values to their appropriate data type and handle any edge cases.
-        # The `cd_to_datetime` function will be useful.
-        self._designation = ''
-        self.time = None  # TODO: Use the cd_to_datetime function for this attribute.
-        self.distance = 0.0
-        self.velocity = 0.0
+        self._designation = designation
+        self.time = cd_to_datetime(time)
+        self.distance = distance
+        self.velocity = velocity
 
         # Create an attribute for the referenced NEO, originally None.
         self.neo = None
+    #enddef
 
+    # TASK - DONE
     @property
     def time_str(self):
         """Return a formatted representation of this `CloseApproach`'s approach time.
@@ -139,19 +145,24 @@ class CloseApproach:
         formatted string that can be used in human-readable representations and
         in serialization to CSV and JSON files.
         """
-        # TODO: Use this object's `.time` attribute and the `datetime_to_str` function to
-        # build a formatted representation of the approach time.
-        # TODO: Use self.designation and self.name to build a fullname for this object.
-        return ''
+        return datetime_to_str(self.time)
+    #enddef
 
+    # TASK - DONE
     def __str__(self):
         """Return `str(self)`."""
-        # TODO: Use this object's attributes to return a human-readable string representation.
-        # The project instructions include one possibility. Peek at the __repr__
-        # method for examples of advanced string formatting.
-        return f"A CloseApproach ..."
+        if self.neo == None:
+            full_name = self._designation
+        else:
+            full_name = self.neo.fullname
+        #endif
+
+        return f"On {self.time_str}, '{full_name}' passes by Earth at a distance of {self.distance:.2f} AU and a velocity of {self.velocity:.2f} km/s."
+    #enddef
 
     def __repr__(self):
         """Return `repr(self)`, a computer-readable string representation of this object."""
-        return f"CloseApproach(time={self.time_str!r}, distance={self.distance:.2f}, " \
-               f"velocity={self.velocity:.2f}, neo={self.neo!r})"
+        return f"CloseApproach(time={self.time_str!r}, distance={self.distance:.2f}, velocity={self.velocity:.2f}, neo={self.neo!r})"
+    #enddef
+
+#endclass
