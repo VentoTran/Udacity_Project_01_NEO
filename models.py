@@ -19,6 +19,9 @@ You'll edit this file in Task 1.
 """
 from helpers import cd_to_datetime, datetime_to_str
 
+import math
+
+""" For those who reading/grading this, I come from C and this syntax of tabs is really bothering me so I'mma just add the tailing end for everything =)))) """
 
 class NearEarthObject:
     """A near-Earth object (NEO).
@@ -32,43 +35,63 @@ class NearEarthObject:
     initialized to an empty collection, but eventually populated in the
     `NEODatabase` constructor.
     """
-    # TODO: How can you, and should you, change the arguments to this constructor?
-    # If you make changes, be sure to update the comments in this file.
-    def __init__(self, **info):
+
+    def __init__(self, designation: str, name: str = None, diameter: float = float("nan"), hazardous: bool = False, approaches: list = None):
         """Create a new `NearEarthObject`.
 
-        :param info: A dictionary of excess keyword arguments supplied to the constructor.
+        :param designation: The primary designation (str)
+        :param name: The IAU name (str)
+        :param diameter: The diameter (float - kilometers)
+        :param hazardous: is potentially hazardous?? (bool)
+        :param approaches: A collection of close approaches to Earth (list)
         """
-        # TODO: Assign information from the arguments passed to the constructor
-        # onto attributes named `designation`, `name`, `diameter`, and `hazardous`.
-        # You should coerce these values to their appropriate data type and
-        # handle any edge cases, such as a empty name being represented by `None`
-        # and a missing diameter being represented by `float('nan')`.
-        self.designation = ''
-        self.name = None
-        self.diameter = float('nan')
-        self.hazardous = False
+        self.designation = designation
+        self.name = name
+        self.diameter = diameter
+        self.hazardous = hazardous
 
         # Create an empty initial collection of linked approaches.
-        self.approaches = []
+        if approaches == None:
+            self.approaches = []
+        else:
+            self.approaches = approaches
+        #endif
+    #enddef
 
     @property
     def fullname(self):
         """Return a representation of the full name of this NEO."""
-        # TODO: Use self.designation and self.name to build a fullname for this object.
-        return ''
+        if self.name == None:
+            return self.designation
+        else:
+            return "{} ({})".format(self.designation, self.name)
+        #endif
+    #enddef
 
     def __str__(self):
-        """Return `str(self)`."""
-        # TODO: Use this object's attributes to return a human-readable string representation.
-        # The project instructions include one possibility. Peek at the __repr__
-        # method for examples of advanced string formatting.
-        return f"A NearEarthObject ..."
+        """Return `str(self)`, a human readable text."""
+
+        if math.isnan(self.diameter) == True:
+            diameter_str = "has unknown diameter"
+        else:
+            diameter_str = "has a diameter of {:.3f} km".format(self.diameter)
+        #endif
+
+        if self.hazardous == True:
+            hazardous_str = "is potentially hazardous"
+        else:
+            hazardous_str = "is NOT potentially hazardous"
+        #endif
+
+        return f"A Near-Earth-Object (NEO) designated as {self.fullname} {diameter_str} and {hazardous_str}!"
+    #enddef
 
     def __repr__(self):
         """Return `repr(self)`, a computer-readable string representation of this object."""
-        return f"NearEarthObject(designation={self.designation!r}, name={self.name!r}, " \
-               f"diameter={self.diameter:.3f}, hazardous={self.hazardous!r})"
+        return f"NearEarthObject(designation={self.designation!r}, name={self.name!r}, diameter={self.diameter:.3f}, hazardous={self.hazardous!r})"
+    #enddef
+
+#endclass
 
 
 class CloseApproach:
