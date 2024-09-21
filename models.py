@@ -25,6 +25,12 @@ import math
 """ For those who reading/grading this, I come from C and this syntax of tabs is really bothering me so I'mma just add the tailing end for everything =)))) """
 """ You can quickly skim through what I changed by the keyword 'TASK - DONE' ;) """
 
+# SUPPORT CLASS
+class CloseApproach:
+    pass
+#endclass
+
+# TASK - DONE
 class NearEarthObject:
     """A near-Earth object (NEO).
 
@@ -39,7 +45,7 @@ class NearEarthObject:
     """
 
     # TASK - DONE
-    def __init__(self, designation: str, name: str = None, diameter: float = float("nan"), hazardous: bool = False, approaches: list = None):
+    def __init__(self, designation: str, name: str = None, diameter: float = float("nan"), hazardous: bool = False, approaches: list[CloseApproach] = None):
         """Create a new `NearEarthObject`.
 
         :param designation: The primary designation (str)
@@ -95,10 +101,9 @@ class NearEarthObject:
         """Return `repr(self)`, a computer-readable string representation of this object."""
         return f"NearEarthObject(designation={self.designation!r}, name={self.name!r}, diameter={self.diameter:.3f}, hazardous={self.hazardous!r})"
     #enddef
-
 #endclass
 
-
+# TASK - DONE
 class CloseApproach:
     """A close approach to Earth by an NEO.
 
@@ -128,7 +133,7 @@ class CloseApproach:
         self.velocity = velocity
 
         # Create an attribute for the referenced NEO, originally None.
-        self.neo = None
+        self.neo: NearEarthObject = None
     #enddef
 
     # TASK - DONE

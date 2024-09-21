@@ -13,12 +13,13 @@ You'll edit this file in Tasks 2 and 3.
 """
 
 from models import NearEarthObject, CloseApproach
+from filters import Filter
 
 # INFO
 """ For those who reading/grading this, I come from C and this syntax of tabs is really bothering me so I'mma just add the tailing end for everything =)))) """
 """ You can quickly skim through what I changed by the keyword 'TASK - DONE' ;) """
 
-# TASK 
+# TASK - DONE
 class NEODatabase:
     """A database of near-Earth objects and their close approaches.
 
@@ -121,8 +122,8 @@ class NEODatabase:
         return None
     #enddef
 
-    # TASK 
-    def query(self, filters=()) -> CloseApproach:
+    # TASK - DONE
+    def query(self, filters: Filter = None):
         """Query close approaches to generate those that match a collection of filters.
 
         This generates a stream of `CloseApproach` objects that match all of the
@@ -136,10 +137,18 @@ class NEODatabase:
         :param filters: A collection of filters capturing user-specified criteria.
         :return: A stream of matching `CloseApproach` objects.
         """
-        # TODO: Generate `CloseApproach` objects that match all of the filters.
-        for approach in self._approaches:
-            yield approach
-        #endfor
+
+        if filters != None:
+            for approach in self._approaches:
+                if filters.check(approach) == True:
+                    yield approach
+                #endif
+            #endfor
+        else:
+            for approach in self._approaches:
+                yield approach
+            #endfor
+        #endif
     #enddef
 #endclass
 

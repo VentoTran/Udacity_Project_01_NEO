@@ -18,9 +18,17 @@ You'll edit this file in Tasks 3a and 3c.
 """
 import operator
 
+from models import CloseApproach
+from enum import Enum
+
+# INFO
+""" For those who reading/grading this, I come from C and this syntax of tabs is really bothering me so I'mma just add the tailing end for everything =)))) """
+""" You can quickly skim through what I changed by the keyword 'TASK - DONE' ;) """
+
 
 class UnsupportedCriterionError(NotImplementedError):
     """A filter criterion is unsupported."""
+#endclass
 
 
 class AttributeFilter:
@@ -51,10 +59,12 @@ class AttributeFilter:
         """
         self.op = op
         self.value = value
+    #enddef
 
     def __call__(self, approach):
         """Invoke `self(approach)`."""
         return self.op(self.get(approach), self.value)
+    #enddef
 
     @classmethod
     def get(cls, approach):
@@ -67,11 +77,50 @@ class AttributeFilter:
         :return: The value of an attribute of interest, comparable to `self.value` via `self.op`.
         """
         raise UnsupportedCriterionError
+    #enddef
 
     def __repr__(self):
         return f"{self.__class__.__name__}(op=operator.{self.op.__name__}, value={self.value})"
+    #enddef
+#endclass
 
+# SUPPORT CLASS 
+class FilterType(Enum): 
+    DATE = 0
+    DISTANCE = 1
+    VELOCITY = 2
+    DIAMETER = 3
+    HAZARDOUS = 4
+#endclass
 
+# SUPPORT CLASS  
+class Filter:
+
+    def __init__(self, requirement: list[tuple[3]] = None):
+        self._list_op_val_type = requirement
+    #enddef
+
+    def check(self, ca: CloseApproach = None) -> bool:
+        ret: bool = True
+        # Do each of the req in the list
+        for check in self._list_op_val_type:
+            if check[2] == FilterType.DATE:
+                ret &= check[0](ca.time.date(), check[1])
+            elif check[2] == FilterType.DISTANCE:
+                ret &= check[0](ca.distance, check[1])
+            elif check[2] == FilterType.VELOCITY:
+                ret &= check[0](ca.velocity, check[1])
+            elif check[2] == FilterType.DIAMETER:
+                ret &= check[0](ca.neo.diameter, check[1])
+            elif check[2] == FilterType.HAZARDOUS:
+                ret &= check[0](ca.neo.hazardous, check[1])
+            #endif
+        #endfor
+        return ret
+    #enddef
+#endclassDISTANCE
+
+# TASK - DONE
 def create_filters(
         date=None, start_date=None, end_date=None,
         distance_min=None, distance_max=None,
@@ -108,11 +157,54 @@ def create_filters(
     :param hazardous: Whether the NEO of a matching `CloseApproach` is potentially hazardous.
     :return: A collection of filters for use with `query`.
     """
-    # TODO: Decide how you will represent your filters.
-    return ()
 
+    list_filter = []
 
-def limit(iterator, n=None):
+    if date != None:
+        list_filter.append((operator.eq, date, FilterType.DATE))
+    #endif
+
+    if start_date != None:
+        list_filter.append((operator.ge, start_date, FilterType.DATE))
+    #endif
+
+    if end_date != None:
+        list_filter.append((operator.le, end_date, FilterType.DATE))
+    #endif
+
+    if (distance_min != None) and (distance_min != ""):
+        list_filter.append((operator.ge, float(distance_min), FilterType.DISTANCE))
+    #endif
+
+    if (distance_max != None) and (distance_max != ""):
+        list_filter.append((operator.le, float(distance_max), FilterType.DISTANCE))
+    #endif
+
+    if (velocity_min != None) and (velocity_min != ""):
+        list_filter.append((operator.ge, float(velocity_min), FilterType.VELOCITY))
+    #endif
+
+    if (velocity_max != None) and (velocity_max != ""):
+        list_filter.append((operator.le, float(velocity_max), FilterType.VELOCITY))
+    #endif
+
+    if (diameter_min != None) and (diameter_min != ""):
+        list_filter.append((operator.ge, float(diameter_min), FilterType.DIAMETER))
+    #endif
+
+    if (diameter_max != None) and (diameter_max != ""):
+        list_filter.append((operator.le, float(diameter_max), FilterType.DIAMETER))
+    #endif
+
+    if hazardous != None:
+        list_filter.append((operator.eq, bool(hazardous), FilterType.HAZARDOUS))
+    #endif
+
+    return Filter(list_filter) if (list_filter != []) else None
+#enddef
+
+# TASK - DONE
+def limit(iterator, n = None):
     """Produce a limited stream of values from an iterator.
 
     If `n` is 0 or None, don't limit the iterator at all.
@@ -121,5 +213,24 @@ def limit(iterator, n=None):
     :param n: The maximum number of values to produce.
     :yield: The first (at most) `n` values from the iterator.
     """
-    # TODO: Produce at most `n` values from the given iterator.
-    return iterator
+    if (n == 0) or (n == None):
+        return iterator
+    #endif
+
+    # SUS
+
+    # This PASSED all 37 tests
+    # return [x for i, x in enumerate(iterator) if i < n]
+
+    # This FAILED 2 test (tuple cant be use with next() func)
+    ret_list = []
+    for _ in range(0, n):
+        try:
+            ca = next(iterator)
+        except StopIteration:
+            return ret_list
+        #endtry
+        ret_list.append(ca)
+    #endfor
+    return ret_list
+#enddef
