@@ -101,6 +101,25 @@ class NearEarthObject:
         """Return `repr(self)`, a computer-readable string representation of this object."""
         return f"NearEarthObject(designation={self.designation!r}, name={self.name!r}, diameter={self.diameter:.3f}, hazardous={self.hazardous!r})"
     #enddef
+
+    # TASK - TEST
+    def serialize(self) -> dict:
+        """Serialize this `NearEarthObject` into a dictionary."""
+
+        this_as_dict = {}
+        this_as_dict["designation"] = self.designation
+        this_as_dict["name"] = self.name if self.name != None else ""
+
+        # This failed 1 test case but produce a cleaner .json file
+        # this_as_dict["diameter_km"] = self.diameter if (math.isnan(self.diameter) == False) else ""
+
+        # This passed all test
+        this_as_dict["diameter_km"] = self.diameter if (math.isnan(self.diameter) == False) else float("nan")
+
+        this_as_dict["potentially_hazardous"] = self.hazardous
+
+        return this_as_dict
+    #enddef
 #endclass
 
 # TASK - DONE
@@ -168,6 +187,19 @@ class CloseApproach:
     def __repr__(self):
         """Return `repr(self)`, a computer-readable string representation of this object."""
         return f"CloseApproach(time={self.time_str!r}, distance={self.distance:.2f}, velocity={self.velocity:.2f}, neo={self.neo!r})"
+    #enddef
+
+    # TASK - TEST
+    def serialize(self) -> dict:
+        """Serialize this `CloseApproach` into a dictionary"""
+
+        this_as_dict = {
+            "datetime_utc": self.time_str,
+            "distance_au": self.distance,
+            "velocity_km_s": self.velocity,
+        }
+
+        return this_as_dict
     #enddef
 
 #endclass
