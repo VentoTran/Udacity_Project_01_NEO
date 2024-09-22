@@ -25,11 +25,9 @@ from enum import Enum
 """ For those who reading/grading this, I come from C and this syntax of tabs is really bothering me so I'mma just add the tailing end for everything =)))) """
 """ You can quickly skim through what I changed by the keyword 'TASK - DONE' ;) """
 
-
 class UnsupportedCriterionError(NotImplementedError):
     """A filter criterion is unsupported."""
 #endclass
-
 
 class AttributeFilter:
     """A general superclass for filters on comparable attributes.

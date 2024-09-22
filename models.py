@@ -102,7 +102,7 @@ class NearEarthObject:
         return f"NearEarthObject(designation={self.designation!r}, name={self.name!r}, diameter={self.diameter:.3f}, hazardous={self.hazardous!r})"
     #enddef
 
-    # TASK - TEST
+    # TASK - DONE
     def serialize(self) -> dict:
         """Serialize this `NearEarthObject` into a dictionary."""
 
@@ -189,7 +189,7 @@ class CloseApproach:
         return f"CloseApproach(time={self.time_str!r}, distance={self.distance:.2f}, velocity={self.velocity:.2f}, neo={self.neo!r})"
     #enddef
 
-    # TASK - TEST
+    # TASK - DONE
     def serialize(self) -> dict:
         """Serialize this `CloseApproach` into a dictionary"""
 

@@ -72,6 +72,7 @@ def load_approaches(cad_json_path):
             Index 4 - dist
             Index 7 - v_rel
         """
+        # Should parse for a dictinary of {field_name, index_of_field_name}, this removes the hard-code indexes and is more flexible 
         list_of_cas.append(CloseApproach(row[0], row[3], float(row[4]), float(row[7])))
     #endfor
 

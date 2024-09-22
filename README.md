@@ -4,14 +4,85 @@ In this project, you'll use Python - and the skills we've developed throughout t
 
 ## Walkthrough
 
-Hi, Vento here. This is my solution for the Project 01. This is a summary of the way I resolve each task. You can also find my little note in each file that contains tasks.
+Hi, `Vento` here. This is my solution for the Project 01 of Udacity Intermediate Python course. This is a summary of the way I resolve each task. You can also find my little note in each file that contains tasks.
 
-Also, as we are in the topic of NEOs (and now is 22 Sep 2024): Welcome "2024 PT5", our temporary mini-moon ~!
+Also, as we are in the topic of NEOs (and now is 22-Sep-2024 as I'm writing this): Welcome `"2024 PT5"`, our temporary mini-moon ~!
 
-### Task 1
-### Task 2
-### Task 3
-### Task 4
+One more point, I marked all the place that I editted (where tasks are to be completed) as `"TASK - DONE"` tag.
+
+### Task 1 Build models (`models.py`)
+This task is fairly straightforward, I editted the contructor of both a `NEO` and the `CA` class to take in all the necessary infomation and produce human-readable text when invoked
+```python
+class NearEarthObject:
+  def __init__(self, designation: str, name: str = None, diameter: float = float("nan"), hazardous: bool = False, approaches: list[CloseApproach] = None):
+  ...
+
+class CloseApproach:
+  def __init__(self, designation: str, time: str = None, distance: float = 0.0, velocity: float = 0.0):
+  ...
+```
+
+### Task 2 Extract & Process
+#### 2a Extract data (`extract.py`)
+In this task, the data of `NEO` is loaded from the `csv` file and the `CA` is loaded from the `json` file.
+This produces 2 lists of `NEO` and `CA` for the database instance.
+In the function `load_approaches`, there is a small section that could use some improvement (but it is fine as it is now), for detail check the comment in said function.
+#### 2b Process data (`database.py`)
+From the extracted data, a `database` of `NEO` and `CA` is formed. In this database, NEO and CA is _linked_ together for faster query by `designator` attribute.
+The linking process is implement by _dictionary datatype matching_.
+The database also include `NEO` _query  methods_ by ID and name for later usage.
+```python
+class NEODatabase:
+  def __init__(self, neos: list[NearEarthObject], approaches: list[CloseApproach]):
+  ...
+```
+
+### Task 3 Filter
+This step is abit confusing at 1st glare, and the recommended method for solving this is also not helping much at 1st.
+But the general idea is to create `a filter instance/object` that can be invoked (by calling methods) to determine if a `NEO` or a `CA` is `what the user is looking for`.
+So I chose to create _a whole different approach_.
+#### 3a Create filters (`filters.py`)
+I created a new class named `Filter`. This class will contain all the checking `operation`, `value` and `type of attribute` to compare later on when the filter is invoked.
+```python
+class Filter:
+  def __init__(self, requirement: list[tuple[3]] = None):
+  ...
+```
+The contructor argument provides hint of how this object/instance is created. Each comparison if serialize to _a tuple of 3 elements_: `(op, value, attribute_type)`.
+A series of comparison forms _a list_, and that is stored within the `Filter`'s object.
+```python
+def create_filters(...):
+  list_filter = []
+
+  if date != None:
+    list_filter.append((operator.eq, date, FilterType.DATE))
+  #endif
+
+  return Filter(list_filter) if (list_filter != []) else None
+#enddef
+```
+`Filter` class provides a method `check()` that can be use to check if a `CA` or `NEO` _satisfies_ the query requirements (if any).
+In this method, the series of comparision is execute with info stored from creation step.
+```python
+class Filter:
+  def check(self, ca: CloseApproach = None) -> bool:
+  ...
+```
+#### 3b Query matching close approaches (`database.py`)
+With the `check()` method, the query step becomes _trivial_, as returning `True` means the `NEO` or `CA` is `what the user is looking for`.
+#### 3c Limit results (`filters.py`)
+This sub-task is to check and limit the number of time the generator is run.
+
+### Task 4 Save data (`write.py`)
+In this last task, the output of the query is saved into 1 of the 2 format as `csv` or `json` file.
+Both of the file can be populate using dictionary or list datatype. So the approach was to serialized the NEO and CA into dictionary type that contain all the attribute and checking for the format output.
+
+## Result
+`Overall, this is a pretty fun project ~!`
+
+All the tasks are finish and all the test cases passed.
+
+Ready to summit ~!
 
 ## Overview
 

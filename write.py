@@ -19,8 +19,7 @@ from models import CloseApproach
 """ For those who reading/grading this, I come from C and this syntax of tabs is really bothering me so I'mma just add the tailing end for everything =)))) """
 """ You can quickly skim through what I changed by the keyword 'TASK - DONE' ;) """
 
-
-# TASK - TEST
+# TASK - DONE
 def write_to_csv(results, filename):
     """Write an iterable of `CloseApproach` objects to a CSV file.
 
@@ -46,7 +45,7 @@ def write_to_csv(results, filename):
     #endwith
 #enddef
 
-# TASK - TEST
+# TASK - DONE
 def write_to_json(results, filename):
     """Write an iterable of `CloseApproach` objects to a JSON file.
 
@@ -74,3 +73,4 @@ def write_to_json(results, filename):
         json.dump(writable_list, json_file, indent=4)
     #endwith
 #enddef
+
