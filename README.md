@@ -2,6 +2,17 @@
 
 In this project, you'll use Python - and the skills we've developed throughout this course - to search for and explore close approaches of near-Earth objects (NEOs), using data from NASA/JPL's Center for Near Earth Object Studies.
 
+## Walkthrough
+
+Hi, Vento here. This is my solution for the Project 01. This is a summary of the way I resolve each task. You can also find my little note in each file that contains tasks.
+
+Also, as we are in the topic of NEOs (and now is 22 Sep 2024): Welcome "2024 PT5", our temporary mini-moon ~!
+
+### Task 1
+### Task 2
+### Task 3
+### Task 4
+
 ## Overview
 
 At a high-level, you'll create Python code that implements a command-line tool to inspect and query a dataset of NEOs and their close approaches to Earth.

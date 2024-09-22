@@ -220,17 +220,17 @@ def limit(iterator, n = None):
     # SUS
 
     # This PASSED all 37 tests
-    # return [x for i, x in enumerate(iterator) if i < n]
+    return [x for i, x in enumerate(iterator) if i < n]
 
     # This FAILED 2 test (tuple cant be use with next() func)
-    ret_list = []
-    for _ in range(0, n):
-        try:
-            ca = next(iterator)
-        except StopIteration:
-            return ret_list
-        #endtry
-        ret_list.append(ca)
-    #endfor
-    return ret_list
+    # ret_list = []
+    # for _ in range(0, n):
+    #     try:
+    #         ca = next(iterator)
+    #     except StopIteration:
+    #         return ret_list
+    #     #endtry
+    #     ret_list.append(ca)
+    # #endfor
+    # return ret_list
 #enddef
